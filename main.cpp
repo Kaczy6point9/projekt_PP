@@ -233,7 +233,7 @@ void menu()
 
     if(!cin)// jesli podales ciag nie liczbowy
     {
-        cout << "Nie podales cyfry!"
+        cout << "Nie podales cyfry!";
         system("PAUSE");
         menu(); // wywoluje menu od nowa
     }
@@ -871,8 +871,8 @@ void zapisz_do_pliku(Film *HEAD)
                 fout << tmp->director_surname << ";";
                 fout << tmp->studio << ";";
                 fout << tmp->genre << ";";
-                fout << tmp->other << ";";
-                fout << endl;
+                fout << tmp->other << ";" << endl;
+
                 tmp = tmp->PNext;
             }
 
