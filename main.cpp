@@ -897,7 +897,6 @@ void odczyt_z_pliku(Film **HEAD)
 
 
     Film *tmp1 = (*HEAD); //pomocnik ktory beidze przechowywal stara liste
-    Film *tmp; // pomocnik 2
     string nazwa_pliku; // nazwa pliku ktory ma byc wczytany
     cout << "Podaj sciezke pliku: ";
     cin >> nazwa_pliku; //musimy podac pelna sciezke pliku
@@ -908,11 +907,11 @@ void odczyt_z_pliku(Film **HEAD)
     {
 
 
-        while(!fd.eof()) //dopoki nie dojdzie do konca pliku
+        while(getline(fd, row)) //dopoki nie dojdzie do konca pliku
         {
 
-            getline(fd, row);//zbiera nasza linie i zapisuje ja do zmiennej row
-            tmp= new Film(row); //wywolujemy konstruktro film z argumentem ktroy tworzy nowy element listy według naszego rzedu
+            //getline(fd, row);//zbiera nasza linie i zapisuje ja do zmiennej row
+            Film *tmp = new Film(row); //wywolujemy konstruktro film z argumentem ktroy tworzy nowy element listy według naszego rzedu
 
 
 
@@ -923,8 +922,8 @@ void odczyt_z_pliku(Film **HEAD)
                 tmp1 = *HEAD;
             while (tmp1->PNext != NULL) // przechodzimy na koniec listy
                 tmp1 = tmp1->PNext; //krok do następnego elementu
-            tmp->PPrev = tmp1; //ustawiamy obecnt element na poprzedni
-            tmp->PNext = tmp;//Nastepny element bedzie nowym obiektem i koncem listy
+            tmp1->PPrev = tmp1; //ustawiamy obecnt element na poprzedni
+            tmp1->PNext = tmp;//Nastepny element bedzie nowym obiektem i koncem listy
             }
         }
         fd.close();
