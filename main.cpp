@@ -42,7 +42,9 @@ struct Film
         ID = globalID++;
         cout << "ID zostalo przypisane[" << ID << "]" << endl;
         cout << "Podaj tytul: ";
-        cin >> title; // przypisanie tytulu
+        cin.clear();
+        cin.ignore();
+        getline(cin, title); // przypisanie tytulu
         cout << "Data Produkcji: "<< endl;
 
         while(1)
@@ -105,17 +107,18 @@ struct Film
                 break;
 
         }
-
+        cin.clear();
+        cin.ignore();
         cout << endl << "Podaj imie rezysera: ";
-        cin >> director_name; //przypisanie imienia rezysera
+        getline(cin, director_name); //przypisanie imienia rezysera
         cout << endl << "Podaj nazwisko rezysera: ";
-        cin >> director_surname; //przypisanie nazwiska rezysera
+        getline(cin, director_surname); //przypisanie nazwiska rezysera
         cout << endl << "Podaj nazwe studia: ";
-        cin >> studio; //przypisanie studia
+        getline(cin, studio); //przypisanie studia
         cout << endl << "Gatunek: ";
-        cin >> genre; //przypisanie gatunku
+        getline(cin, genre); //przypisanie gatunku
         cout << endl << "Opis(nagrody etc.): ";
-        cin >> other; //przypisanie opisu
+        getline(cin, other); //przypisanie opisu
         PNext = NULL; //ustawienie wskaźnika na następny na pusty element
         PPrev = NULL; //ustawienie wskaźnika na poprzedni na pusty element
     }
@@ -843,10 +846,12 @@ void zapisz_do_pliku(Film *HEAD)
 	cout << "Podaj nazwe pliku: ";
 	cin >> nazwa_pliku; // podajemy nazwe pliku
     nazwa_pliku += ".txt";//do naszej nazwy dodwane jest rozszerzenie
-	ofstream fout;//outpu file czyli odpalamy fstreama w trybie zapisu
+    fstream fout; //outpu file czyli odpalamy fstreama w trybie zapisu
 
-	if(ofstream(nazwa_pliku.c_str())) //jesli nasz plik juz istnieje
+
+	if(fstream(nazwa_pliku.c_str())) //jesli nasz plik juz istnieje
     {
+
         cout << "Plik istnieje, czy chcesz nadpisac?" << endl;
         cout << "1.TAK\t2.NIE" << endl;
         int opcja;
@@ -888,6 +893,29 @@ void zapisz_do_pliku(Film *HEAD)
             fout.close();
             menu();
         }
+    }
+    else
+    {
+        fout.open(nazwa_pliku.c_str() );
+                tmp = HEAD;
+            while(tmp != NULL) //spisujemy kolejne elementy listy oddzielamy jest srednikami tak jak w bazach danych
+            {
+                fout << tmp->ID << ";";
+                fout << tmp->title << ";";
+                fout << tmp->date.day << ";" << tmp->date.month << ";" << tmp->date.year << ";";
+                fout << tmp->director_name << ";";
+                fout << tmp->director_surname << ";";
+                fout << tmp->studio << ";";
+                fout << tmp->genre << ";";
+                fout << tmp->other << ";" << endl;
+
+                tmp = tmp->PNext;
+            }
+
+            fout.close();
+            cout << "Lista zapisana" << endl ;
+            system("PAUSE");
+            menu();
     }
 
 }
