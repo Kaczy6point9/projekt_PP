@@ -725,31 +725,31 @@ void Edytuj(Film **HEAD) // edycja filmu
     }
     cout << endl << "Data: " << tmp->date.day << "/" << tmp->date.month << "/" << tmp->date.year << endl;
     cout << "Zmien imie rezysera (wcisnij enter by pozostal bez zmian)[" << tmp->director_name <<"]: ";
-    cin.ignore();
+    //cin.ignore();
     getline(cin, line);
     if(!line.empty())
         tmp->director_name = line;
     cout << endl << "Imie Rezysera Teraz: " << tmp->director_name << endl;
     cout << "Zmien nazwisko rezysera(wcisnij enter by pozostal bez zmian)[" << tmp->director_surname <<"]: ";
-    cin.ignore();
+    //cin.ignore();
     getline(cin, line);
     if(!line.empty())
         tmp->director_surname = line;
     cout << endl << "Nazwisko rezysera teraz: " << tmp->director_surname << endl;
     cout << "Nowa nazwa studia(wcisnij enter by pozostal bez zmian)[" << tmp->studio <<"]: ";
-    cin.ignore();
+    //cin.ignore();
     getline(cin, line);
     if(!line.empty())
         tmp->studio = line;
     cout << endl << "Zmienione Studio: " << tmp->studio << endl;
     cout << "Zmien gatunek(wcisnij enter by pozostal bez zmian)[" << tmp->genre <<"]: ";
-    cin.ignore();
+    //cin.ignore();
     getline(cin, line);
     if(!line.empty())
         tmp->genre = line;
     cout << endl << "Zmieniony gatunek: " << tmp->genre << endl;
     cout << "Nowy opis(wcisnij enter by pozostal bez zmian)[" << tmp->other <<"]: ";
-    cin.ignore();
+    //cin.ignore();
     getline(cin, line);
     if(!line.empty())
         tmp->other = line;
@@ -896,6 +896,7 @@ void zapisz_do_pliku(Film *HEAD)
     }
     else
     {
+
         fout.open(nazwa_pliku.c_str() );
                 tmp = HEAD;
             while(tmp != NULL) //spisujemy kolejne elementy listy oddzielamy jest srednikami tak jak w bazach danych
@@ -933,8 +934,13 @@ void odczyt_z_pliku(Film **HEAD)
     fd.open(nazwa_pliku.c_str());//otwieramy plik
     if(fd)
     {
-
-
+        globalID = 1;
+        while (*HEAD != NULL)
+        {
+		tmp1 = *HEAD;
+		*HEAD = (*HEAD)->PNext;
+		delete tmp1;
+        }
         while(getline(fd, row)) //dopoki nie dojdzie do konca pliku
         {
 
@@ -955,6 +961,8 @@ void odczyt_z_pliku(Film **HEAD)
             }
         }
         fd.close();
+
+        cout << "Baza wczytana" << endl;
     }
     else
     {
