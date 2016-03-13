@@ -209,32 +209,32 @@ void ShellS(int *x, int n)
 void BuildHeap(int *x, int n)
 {
 	
-	for (int i = (n - 1) / 2; i >= 0; i--)
-		HeapIfy(x, n, i);
+	for (int i = (n - 1) / 2; i >= 0; i--) //tworzymy kopiec z schodząc kolejno do pierwszego elementu
+		HeapIfy(x, n, i); //przywracamy własność kopca
 
 }
 
 void HeapIfy(int *x, int n, int el)
 {
-	int l = 2 * el;
-	int r = 2 * el + 1;
-	int i;
-	while (l <= n)
+	int l = 2 * el; //lewy element
+	int r = 2 * el + 1; //pawy element
+	int i; //najwiekszy z tej dwojki
+	while (l <= n) //dopoki lewy jest mniejszy lub równy wielkosci kopca
 	{
-		if (r <= n)
+		if (r <= n) //jesli prawy jest mniejszy lub rowny wielkosci kopca
 		{
-			if (x[r] < x[l])
-				i = l;
+			if (x[r] < x[l]) //jesli prawy mniejszy od lewego
+				i = l; //najwiekszy jest lewy
 			else
-				i = r;
+				i = r; //w innym wypadku najwiekszy jest prawy
 		}
 		else
-			i = l;
-		if (x[i] > x[el])
+			i = l; //jesli prawy jest wiekszy od wielkosci kopca czyli wykracza poza niego to najwiekszy automatycznie jest lewy
+		if (x[i] > x[el]) //jesli najwiekszy jest wiekszy od rodzica
 		{
-			swap(x[i], x[el]);
-			el = i;
-			l = 2 * el;
+			swap(x[i], x[el]); //zamieniamy rodzica z najwiekszym
+			el = i; //rodzicem staje sie najwiekszy
+			l = 2 * el; //ustawiamy nowe dzieci nowego rodzica
 			r = 2 * el + 1;
 		}
 		else
@@ -246,17 +246,17 @@ void HeapIfy(int *x, int n, int el)
 
 void HeapSort(int *x, int n)
 {
-	double roznica;
+	double roznica;            //tu ogólnie liczy się czas algorytmu, opisane szczegółowo w QSzolbiczeniem
 	cout.setf(ios::fixed);
 	cout.precision(5);
 	clock_t start, koniec;
 	start = clock();
-	BuildHeap(x, n);
-	for (int i = n-1; i > 0; i--)
+	BuildHeap(x, n); //budujemy heap
+	for (int i = n-1; i > 0; i--) //schodzimy do naszego korzenia i zamieniamy elementy, po czym odcinamy element posortowany
 	{
 		swap(x[i], x[0]);
 		n--;
-		HeapIfy(x, i-1, 0);
+		HeapIfy(x, i-1, 0); //przywracamy własnosć kopca
 	}
 	koniec = clock();
 	roznica = (koniec - start) / (double)CLOCKS_PER_SEC;
@@ -265,38 +265,39 @@ void HeapSort(int *x, int n)
 
 void QS(int *x, int l, int r)
 {
-	int i = l;
-	int j = r;
-	int tmp = x[(l + r) / 2];
+	int i = l; //nasza lewa wartość
+	int j = r; // nasza prawa wartość
+	int tmp = x[(l + r) / 2]; //bierzemy naszego x z połowy naszej tablicy
 	
 	do
 	{
-		while (x[i] < tmp)
+		while (x[i] < tmp) //dopóki element lewy tablicy jest mniejszy od naszego "x" czyli tmp to przechodzimy na kolejny element - idziemy w prawo
 			i++;
-		while (x[j] > tmp)
+		while (x[j] > tmp) //dopóki element prawy tablicy jest wiekszy od naszego "x" czyli tmp to przechodzimy na kolejny element - idziemy w lewo
 			j--;
-		if (i <= j)
+		if (i <= j) //jesli nasza lewy jest mniejszy od prawego to zmieniamy i przechodzimy na kolejene elementy
 		{
 			swap(x[i], x[j]);
 			i++;
 			j--;
 		}
 
-	} while (i <= j);
-	if (l < j) QS(x, l, j);
-	if (r > i) QS(x, i, r);
+	} while (i <= j); //pętla wykonuje się tak długo dopóki nie zajdzie zmiana
+	if (l < j) QS(x, l, j); //rekurencja
+	if (r > i) QS(x, i, r); //rekurencja
 	
 }
 
 void QSzobliczeniem(int *x, int n)
 {
-	double roznica;
-	cout.setf(ios::fixed);
-	cout.precision(5);
-	clock_t start, koniec;
-	start = clock();
-	QS(x, 0, n - 1);
-	koniec = clock();
-	roznica = (koniec - start) / (double)CLOCKS_PER_SEC;
-	cout << "Czas wykonania algorytmu QS: " << roznica << endl;
+	double roznica; //nasz czas koncowy
+	cout.setf(ios::fixed); //ustawienie porpawnego wyswietlania czasu
+	cout.precision(5); //z dokładnościa do 5 zer
+	clock_t start, koniec; //ustawiamy zmienne czasowe
+	start = clock(); //zbieramy czas startowy
+	QS(x, 0, n - 1); //odpalamy quicksorta
+	koniec = clock(); //zabieramy czas po ukończeniu algorymtu
+	roznica = (koniec - start) / (double)CLOCKS_PER_SEC; //odejmujemy od siebie dwa czasy i dzielimy przez sekundy
+	cout << "Czas wykonania algorytmu QS: " << roznica << endl; // wyswietlamy wynik
+
 }
