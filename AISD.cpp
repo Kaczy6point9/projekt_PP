@@ -205,47 +205,57 @@ void ShellS(int *x, int n)
 
 void BuildHeap(int *x, int n)
 {
-	for (int i = n / 2; i >= 1; i--)
-		HeapIfy(x, n, i); //przywracamy własność kopca dla elementu o indeksie i
+	
+	for (int i = (n - 1) / 2; i >= 0; i--)
+		HeapIfy(x, n, i);
+
 }
 
 void HeapIfy(int *x, int n, int el)
 {
 	int l = 2 * el;
 	int r = 2 * el + 1;
-	int najwiekszy;
-	while (l < n)
+	int i;
+	while (l <= n)
 	{
 		if (r <= n)
 		{
-
-			if (l < n && x[l] > x[r])
-				najwiekszy = l;
+			if (x[r] < x[l])
+				i = l;
 			else
-				najwiekszy = r;
+				i = r;
 		}
-		else 
-			najwiekszy = l;
-		if (x[najwiekszy] > x[el])
+		else
+			i = l;
+		if (x[i] > x[el])
 		{
-			swap(x[najwiekszy], x[el]);
-			el = najwiekszy;
+			swap(x[i], x[el]);
+			el = i;
 			l = 2 * el;
 			r = 2 * el + 1;
 		}
 		else
 			break;
-		
+
 	}
+	
 }
 
 void HeapSort(int *x, int n)
 {
+	double roznica;
+	cout.setf(ios::fixed);
+	cout.precision(5);
+	clock_t start, koniec;
+	start = clock();
 	BuildHeap(x, n);
-	for (int i = n; i >= 2; i--)
+	for (int i = n-1; i > 0; i--)
 	{
-		swap(x[i], x[1]);
+		swap(x[i], x[0]);
 		n--;
-		HeapIfy(x, i-1, 1);
+		HeapIfy(x, i-1, 0);
 	}
+	koniec = clock();
+	roznica = (koniec - start) / (double)CLOCKS_PER_SEC;
+	cout << "Czas wykonania algorytmu HeapSort: " << roznica << endl;
 }
