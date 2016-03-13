@@ -18,6 +18,7 @@ void ShellS(int *x, int n);
 void HeapSort(int *x, int n);
 void HeapIfy(int *x, int n, int el);
 void BuildHeap(int *x, int n);
+void QS(int *x, int l, int r);
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -35,13 +36,14 @@ int _tmain(int argc, _TCHAR* argv[])
 	//ss(ciag, n);
 	//is(ciag, n);
 	//ShellS(ciag, n);
-	HeapSort(ciag, n);
+	//HeapSort(ciag, n);
+	QS(ciag, 0, n-1);
 
-	for(int i = 0; i < n; i++) //wyswietla elementy posortowanego ciagu
+	/*for(int i = 0; i < n; i++) //wyswietla elementy posortowanego ciagu
 	{
 		cout << ciag[i] << endl;
 	}
-	
+	*/
 	system("PAUSE");
 	delete[] ciag;
 	return 0;
@@ -255,6 +257,37 @@ void HeapSort(int *x, int n)
 		n--;
 		HeapIfy(x, i-1, 0);
 	}
+	koniec = clock();
+	roznica = (koniec - start) / (double)CLOCKS_PER_SEC;
+	cout << "Czas wykonania algorytmu HeapSort: " << roznica << endl;
+}
+
+void QS(int *x, int l, int r)
+{
+	int i = l;
+	int j = r;
+	int tmp = x[(l + r) / 2];
+	double roznica;
+	cout.setf(ios::fixed);
+	cout.precision(5);
+	clock_t start, koniec;
+	start = clock();
+	do
+	{
+		while (x[i] < tmp)
+			i++;
+		while (x[j] > tmp)
+			j--;
+		if (i <= j)
+		{
+			swap(x[i], x[j]);
+			i++;
+			j--;
+		}
+
+	} while (i <= j);
+	if (l < j) QS(x, l, j);
+	if (r > i) QS(x, i, r);
 	koniec = clock();
 	roznica = (koniec - start) / (double)CLOCKS_PER_SEC;
 	cout << "Czas wykonania algorytmu HeapSort: " << roznica << endl;
