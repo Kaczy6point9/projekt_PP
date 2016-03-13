@@ -23,7 +23,7 @@ void QSzobliczeniem(int *x, int n);
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	
+
 	srand(time(NULL));//wlaczenie zegara dla randomowania zmiennych
 	int n, *ciag; //deklaracja dlugosci ciagu, i wskaznika na ciag
 	cout << "Podaj liczbe elementow ciagu: ";
@@ -31,18 +31,18 @@ int _tmain(int argc, _TCHAR* argv[])
 	ciag = new int[n]; //stworzenie nowej tablicy dynamicznej o wielkosci podanej przez uzytkownika
 	//wypelnijtablicerosnaco(ciag, n);
 	//wypelnijtablicemalejaco(ciag, n);
-	wypelnijtablicelosowo(ciag, n);
+	//wypelnijtablicelosowo(ciag, n);
 	//wypelnijtablicestala(ciag, n);
 	//wypelnijtabliceaksztalt(ciag, n);
 	//ss(ciag, n);
 	//is(ciag, n);
 	//ShellS(ciag, n);
 	//HeapSort(ciag, n);
-	QSzobliczeniem(ciag, n);
+	//QSzobliczeniem(ciag, n);
 
 	/*for(int i = 0; i < n; i++) //wyswietla elementy posortowanego ciagu
 	{
-		cout << ciag[i] << endl;
+	cout << ciag[i] << endl;
 	}
 	*/
 	system("PAUSE");
@@ -52,10 +52,10 @@ int _tmain(int argc, _TCHAR* argv[])
 
 void wypelnijtablicerosnaco(int *x, int n)
 {
-	
+
 	for (int i = 1; i <= n; i++)
 	{
-		x[i-1] = i;
+		x[i - 1] = i;
 		//cout << x[i] << endl;
 	}
 
@@ -63,11 +63,11 @@ void wypelnijtablicerosnaco(int *x, int n)
 
 void wypelnijtablicemalejaco(int *x, int n)
 {
-	int pom=n;
+	int pom = n;
 	for (int i = 1; i <= n; i++)
 	{
-		
-		x[i-1] = pom;
+
+		x[i - 1] = pom;
 		//cout << x[i] << endl;
 		pom--;
 	}
@@ -78,7 +78,7 @@ void wypelnijtablicelosowo(int *x, int n)
 {
 	for (int i = 1; i <= n; i++)
 	{
-		x[i-1] = rand() % n;
+		x[i - 1] = rand() % n;
 		//cout << x[i-1] << endl;
 	}
 	//cout << "--------" << endl;
@@ -88,12 +88,12 @@ void wypelnijtabliceaksztalt(int *x, int n)
 {
 	int pom;
 	pom = 0;
-	for (int i = 1; i <= n/2; i++)
+	for (int i = 1; i <= n / 2; i++)
 	{
-		while(pom % 2 != 0)
+		while (pom % 2 != 0)
 			pom++;
 		pom++;
-		x[i-1] = pom;
+		x[i - 1] = pom;
 	}
 
 	for (int i = n / 2; i <= n; i++)
@@ -101,7 +101,7 @@ void wypelnijtabliceaksztalt(int *x, int n)
 		while (pom % 2 == 0)
 			pom--;
 		pom--;
-		x[i-1] = pom;
+		x[i - 1] = pom;
 	}
 }
 
@@ -112,36 +112,36 @@ void wypelnijtablicestala(int *x, int n)
 	cin >> liczba;
 	for (int i = 1; i <= n; i++)
 	{
-		x[i-1] = liczba;
-		
+		x[i - 1] = liczba;
+
 	}
 }
 
 void ss(int *x, int n)
 {
-	int min;
-	double roznica;
+	int min; //wartosć minimalna 
+	double roznica; //liczenie czasu algorytmu bardziej opisane w QSzobliczeniem
 	cout.setf(ios::fixed);
 	cout.precision(5);
 	clock_t start, koniec;
 	start = clock();
-	for (int i = 0; i < n-1; i++)
+	for (int i = 0; i < n - 1; i++) //od poczatku tablicy do n-1 elementu 
 	{
-	
-		min = i;
-		for (int j = i + 1; j < n; j++)
+
+		min = i; //ustawiamy naszego mina na pierwszy element tablicy
+		for (int j = i + 1; j < n; j++) //j to zmienna do poruszania się po tablicy, będzie wskazywała na element kolejny
 		{
-			if (x[j] < x[min])
+			if (x[j] < x[min]) // jesli element kolejny jest mniejszy od aktualnego to nasz kolejny staje się minimum
 			{
 				min = j;
 			}
-			
+
 		}
-		if (min != i)
+		if (min != i) //jesli minimum jest inne niż nasz aktualny to zamieniamy miejscami elementy
 		{
 			swap(x[min], x[i]);
 		}
-		
+
 	}
 	koniec = clock();
 	roznica = (koniec - start) / (double)CLOCKS_PER_SEC;
@@ -151,19 +151,19 @@ void ss(int *x, int n)
 
 void is(int *x, int n)
 {
-	int tmp, el;
+	int tmp, el; // zmienne pomocnicze jedna bedzie wszkazywala element, a druga chwilowo przechowywala wartosc elementu
 	double roznica;
 	cout.setf(ios::fixed);
 	cout.precision(5);
 	clock_t start, koniec;
 	start = clock();
-	for (int i = 1; i < n; i++)
+	for (int i = 1; i < n; i++) // od drugiego elementu tablic do ostatniego
 	{
-		tmp = x[i];
-		for (el = i - 1; el >= 0 && x[el] > tmp; el--)
-			x[el + 1] = x[el];
-		
-		x[el + 1] = tmp;
+		tmp = x[i]; //w tmp przechowujemy wartosc pierwszego elementu
+		for (el = i - 1; el >= 0 && x[el] > tmp; el--)//zmienna el przechowuje poprzedni element tablicy, jeśli element jest wiekszy o 0 i jesli jest wiekszy od tmp to wykonujemy krok czyli zmniejszamy go o 1
+			x[el + 1] = x[el]; //zamieniamy miejscami elementy
+
+		x[el + 1] = tmp; //ponowna zmiana elementów
 	}
 	koniec = clock();
 	roznica = (koniec - start) / (double)CLOCKS_PER_SEC;
@@ -176,7 +176,7 @@ void ShellS(int *x, int n)
 	int j; //zmienna sterujaca petli
 	int i; //indeks elementu tablicy uporzadkowanej
 	int el; //wybrany element tablicy
-	
+
 	double roznica;
 	cout.setf(ios::fixed);
 	cout.precision(5);
@@ -208,7 +208,7 @@ void ShellS(int *x, int n)
 
 void BuildHeap(int *x, int n)
 {
-	
+
 	for (int i = (n - 1) / 2; i >= 0; i--) //tworzymy kopiec z schodząc kolejno do pierwszego elementu
 		HeapIfy(x, n, i); //przywracamy własność kopca
 
@@ -241,7 +241,7 @@ void HeapIfy(int *x, int n, int el)
 			break;
 
 	}
-	
+
 }
 
 void HeapSort(int *x, int n)
@@ -252,11 +252,11 @@ void HeapSort(int *x, int n)
 	clock_t start, koniec;
 	start = clock();
 	BuildHeap(x, n); //budujemy heap
-	for (int i = n-1; i > 0; i--) //schodzimy do naszego korzenia i zamieniamy elementy, po czym odcinamy element posortowany
+	for (int i = n - 1; i > 0; i--) //schodzimy do naszego korzenia i zamieniamy elementy, po czym odcinamy element posortowany
 	{
 		swap(x[i], x[0]);
 		n--;
-		HeapIfy(x, i-1, 0); //przywracamy własnosć kopca
+		HeapIfy(x, i - 1, 0); //przywracamy własnosć kopca
 	}
 	koniec = clock();
 	roznica = (koniec - start) / (double)CLOCKS_PER_SEC;
@@ -268,7 +268,7 @@ void QS(int *x, int l, int r)
 	int i = l; //nasza lewa wartość
 	int j = r; // nasza prawa wartość
 	int tmp = x[(l + r) / 2]; //bierzemy naszego x z połowy naszej tablicy
-	
+
 	do
 	{
 		while (x[i] < tmp) //dopóki element lewy tablicy jest mniejszy od naszego "x" czyli tmp to przechodzimy na kolejny element - idziemy w prawo
@@ -285,7 +285,7 @@ void QS(int *x, int l, int r)
 	} while (i <= j); //pętla wykonuje się tak długo dopóki nie zajdzie zmiana
 	if (l < j) QS(x, l, j); //rekurencja
 	if (r > i) QS(x, i, r); //rekurencja
-	
+
 }
 
 void QSzobliczeniem(int *x, int n)
