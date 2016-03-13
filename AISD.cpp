@@ -19,6 +19,7 @@ void HeapSort(int *x, int n);
 void HeapIfy(int *x, int n, int el);
 void BuildHeap(int *x, int n);
 void QS(int *x, int l, int r);
+void QSzobliczeniem(int *x, int n);
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -37,7 +38,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//is(ciag, n);
 	//ShellS(ciag, n);
 	//HeapSort(ciag, n);
-	QS(ciag, 0, n-1);
+	QSzobliczeniem(ciag, n);
 
 	/*for(int i = 0; i < n; i++) //wyswietla elementy posortowanego ciagu
 	{
@@ -267,11 +268,7 @@ void QS(int *x, int l, int r)
 	int i = l;
 	int j = r;
 	int tmp = x[(l + r) / 2];
-	double roznica;
-	cout.setf(ios::fixed);
-	cout.precision(5);
-	clock_t start, koniec;
-	start = clock();
+	
 	do
 	{
 		while (x[i] < tmp)
@@ -288,7 +285,18 @@ void QS(int *x, int l, int r)
 	} while (i <= j);
 	if (l < j) QS(x, l, j);
 	if (r > i) QS(x, i, r);
+	
+}
+
+void QSzobliczeniem(int *x, int n)
+{
+	double roznica;
+	cout.setf(ios::fixed);
+	cout.precision(5);
+	clock_t start, koniec;
+	start = clock();
+	QS(x, 0, n - 1);
 	koniec = clock();
 	roznica = (koniec - start) / (double)CLOCKS_PER_SEC;
-	cout << "Czas wykonania algorytmu HeapSort: " << roznica << endl;
+	cout << "Czas wykonania algorytmu QS: " << roznica << endl;
 }
