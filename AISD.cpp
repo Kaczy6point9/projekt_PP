@@ -267,8 +267,8 @@ void QS(int *x, int l, int r)
 {
 	int i = l; //nasza lewa wartość
 	int j = r; // nasza prawa wartość
-	int tmp = x[(l + r) / 2]; //bierzemy naszego x z połowy naszej tablicy
-
+	int tmp = x[r]; //bierzemy naszego x z połowy naszej tablicy
+	//int tmp = x[rand() % n];
 	do
 	{
 		while (x[i] < tmp) //dopóki element lewy tablicy jest mniejszy od naszego "x" czyli tmp to przechodzimy na kolejny element - idziemy w prawo
