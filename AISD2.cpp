@@ -30,18 +30,18 @@ public:
 	bool dodaj(int wartosc)
 	{
 	
-		if (wartosc < this->wartosc) {
-			if (lewy == NULL) {
-				lewy = new BSTkorzen(wartosc);
-				lewy->rodzic = this;
+		if (wartosc < this->wartosc) { //jezeli wartośc jest mniejsza od wartości tego korzenia
+			if (lewy == NULL) { //sprawdzamy czy lewe podrzewo jest puste
+				lewy = new BSTkorzen(wartosc); //jezeli jest puste tworzymy nowe poddrzewo
+				lewy->rodzic = this; //ustawiamy rodzica nowego poddrzewa
 				return true;
 			}
 			else
-				return lewy->dodaj(wartosc);
+				return lewy->dodaj(wartosc); //jesli nie jest puste schodzimy niżej w lewą stronę
 		}
-		else if (wartosc >= this->wartosc) {
-			if (prawy == NULL) {
-				prawy = new BSTkorzen(wartosc);
+		else if (wartosc >= this->wartosc) { //jeżeli wartość jest wieksza 
+			if (prawy == NULL) { //idziemy w prawo
+				prawy = new BSTkorzen(wartosc); //analogia jak wyżej
 				prawy->rodzic = this;
 				return true;
 			}
@@ -68,7 +68,7 @@ public:
 	//konstruktor drzewa
 	drzewoBST()
 	{
-		korzen = NULL;
+		korzen = NULL; //ustawiamy korzen głowny na pusty przy tworzeniu drzewa
 	}
 
 	//szukanie wartosci maks i minimum
@@ -76,30 +76,30 @@ public:
 	{
 		while (start->lewy != NULL)
 		{
-			start = start->lewy;
+			start = start->lewy; //dopoki jest lewe poddrzewo schodzimy w lewo
 		}
 
-		return start;
+		return start; //zwracamy wartość najbardziej lewego poddrzewa
 	}
 	BSTkorzen *Maximum(BSTkorzen *start)//zwraca wartosc maksymalna drzewa
 	{
-		while (start->prawy != NULL)
+		while (start->prawy != NULL) //dopóki jest prawe poddrzewo 
 		{
-			start = start->prawy;
+			start = start->prawy; //schodzimy prawo
 		}
 
-		return start;
+		return start; //zwaracamy wartosc najbardziej prawego poddrzewa
 	}
 
 	//dodawanie do drzewa
 	bool dodaj(int wartosc)
 	{
-		if (korzen == NULL) {
-			korzen = new BSTkorzen(wartosc);
+		if (korzen == NULL) { //jesli drzewo jest puste
+			korzen = new BSTkorzen(wartosc); //tworzymy nowy korzen głowny
 			return true;
 		}
 		else
-			return korzen->dodaj(wartosc);
+			return korzen->dodaj(wartosc); //jesli nie jest puste sprawdzamy dzieci kod opisany wyżej
 	}
 
 	//chodzenie po drzewie
@@ -111,7 +111,7 @@ public:
 			cout << start->wartosc << endl;
 			InorderTreeWalk(start->prawy);
 		}
-	}
+	} 
 	void PreorderTreeWalk(BSTkorzen *start)
 	{
 		if (start)
@@ -126,10 +126,10 @@ public:
 	//wyszukiwanie elementu
 	BSTkorzen *wyszukiwanie(int element, BSTkorzen *start)
 	{
-		if (start == NULL || start->wartosc == element) return start;
+		if (start == NULL || start->wartosc == element) return start; //jeżeli korzen jest pusty, albo jest równy szukanemu elementowi zwaracamy szukany element
 
-		if (element < start->wartosc) return wyszukiwanie(element, start->lewy);
-		else return wyszukiwanie(element, start->prawy);
+		if (element < start->wartosc) return wyszukiwanie(element, start->lewy); //jeśli szukany element jest mniejszy od wartosci przy której jesteśmy, schodzimy rekurencyjnie w lewo
+		else return wyszukiwanie(element, start->prawy); // w przeciwnym wypadku w prawo
 	}
 	
 	//Usuwanie
@@ -228,9 +228,9 @@ public:
 
 
 
-	drzewoAVL(int x[], int n)
+	drzewoAVL(int x[], int n) //konstruktor który przypisuje do korzenia głownego drzewo które powstaje poprzez bisekcje
 	{
-		korzenglowny = dodaj(x, n);
+		korzenglowny = dodaj(x, n); 
 	}
 	
 	drzewoAVL(int wart) //konstruktor ktory przypisuje wartosc korzeniowi
@@ -275,13 +275,13 @@ public:
 	{
 		
 	
-		if (start > koniec) return NULL;
-		int srodek = start + (koniec - start) / 2;
-		drzewoAVL *korzen = new drzewoAVL(x[srodek]);
-		korzen->ustawLewy(dodaj(x, start, srodek - 1, korzen));
-		korzen->ustawPrawy(dodaj(x, srodek + 1, koniec, korzen));
-		korzen->rodzic = rodzic;
-		return korzen;
+		if (start > koniec) return NULL; //jeżeli początek jest większy od zwracamy nic, zapobiega overflow
+		int srodek = start + (koniec - start) / 2; // ustawiamy srodek
+		drzewoAVL *korzen = new drzewoAVL(x[srodek]); //tworzymy nowy korzen który ma wartość środka tablicy
+		korzen->ustawLewy(dodaj(x, start, srodek - 1, korzen)); //lewy podrzewo jest lewą stroną podzielonej tablicy
+		korzen->ustawPrawy(dodaj(x, srodek + 1, koniec, korzen)); //prawe poddrzewo jest prawą stroną podzielonej tablicy
+		korzen->rodzic = rodzic; //rodzic jest równy rodzicowi podanemu w argmuencie czyli w tym wypadku poprzednim poddrzewem
+		return korzen; //zwraca podrzewo
 
 			
 	}
@@ -289,7 +289,7 @@ public:
 	{
 		return dodaj(x, 0, n - 1, NULL);
 	}
-	bool dodajwartosc(int wartosc)
+	bool dodajwartosc(int wartosc) //opisane wyżej
 	{
 
 		if (wartosc < this->wartosc) {
@@ -518,7 +518,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		zdegenerowaneBST->dodaj(ciag[i]);
 	}
-	for (int i = 0; i < n / 10; i++)
+	for (int i = 0; i < n / 10; i++) //pętla wykonuje się od 0 do n/10 wartości, czyli jeśli mamy 1000 elementów pętla wykona się 100 razy
 	{
 		int szukana = rand() % n;
 		cout << "Wartosci wyszukane w drzewie BST to: " << drzewkoBST->wyszukiwanie(szukana, drzewkoBST->korzen)->wartosc << endl;
@@ -538,7 +538,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	cout << endl;
 	 
 	//dodawanie elementu
-	int pom = n - 1;
+	int pom = n - 1; // pomocnicza wartość, przechowuje numer indeksu potrzebny do chodzenia od tyłu po tablicy
 	for (int i = 0; i < n/10; i++)
 	{
 		drzewkoBST->dodaj(ciaglosowy[pom]);
