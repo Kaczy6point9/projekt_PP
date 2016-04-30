@@ -1,4 +1,4 @@
-// AIDS2.cpp : Defines the entry point for the console application.
+// AIDS3.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -91,6 +91,35 @@ public:
 		return start; //zwaracamy wartosc najbardziej prawego poddrzewa
 	}
 
+	//wysokosc drzewa
+	int wysokosc(BSTkorzen *start)
+	{
+		if (start == NULL)
+			return 0;
+		else
+		{
+			int lewawysokosc = wysokosc(start->lewy);
+			int prawawysokosc = wysokosc(start->prawy);
+
+			if (lewawysokosc > prawawysokosc)
+				return (lewawysokosc + 1);
+			else return (prawawysokosc + 1);
+		}
+
+	}
+	void wyswysokosc(BSTkorzen *start)
+	{
+		if (start != NULL)
+		{
+			cout << start->wartosc << "|" << wysokosc(start) << endl;
+			wyswysokosc(start->lewy);
+			wyswysokosc(start->prawy);
+
+		}
+
+	}
+
+	
 	//dodawanie do drzewa
 	bool dodaj(int wartosc)
 	{
@@ -248,6 +277,33 @@ public:
 	void ustawPrawy(drzewoAVL *prawy) 
 	{
         this->prawy = prawy;
+	}
+	//wyswietlanie wysokosci
+	int wysokosc(drzewoAVL *start)
+	{
+		if (start == NULL)
+			return 0;
+		else
+		{
+			int lewawysokosc = wysokosc(start->lewy);
+			int prawawysokosc = wysokosc(start->prawy);
+
+			if (lewawysokosc > prawawysokosc)
+				return (lewawysokosc + 1);
+			else return (prawawysokosc + 1);
+		}
+		
+	}
+	void wyswysokosc(drzewoAVL *start)
+	{
+		if (start != NULL)
+		{
+			cout << start->wartosc << "|" << wysokosc(start) << endl;
+			wyswysokosc(start->lewy);
+			wyswysokosc(start->prawy);
+
+		}
+		
 	}
 
 	//szukanie wartosci maks i minimum
@@ -506,34 +562,45 @@ int _tmain(int argc, _TCHAR* argv[])
 	wypelnijtablicerosnaco(ciag, n);
 	wypelnijtablicelosowo(ciaglosowy, n);
 	drzewoBST *drzewkoBST = new drzewoBST;
-
+	/*double roznica;
+	cout.setf(ios::fixed);
+	cout.precision(5);
+	clock_t start, koniec;
+	start = clock();
+	koniec = clock();
+	roznica = (koniec - start) / (double)CLOCKS_PER_SEC;
+	cout << "Czas wykonania algorytmu IS: " << roznica << endl;
+	*/
 	for (int i = 0; i < n; i++)
 	{
 		drzewkoBST->dodaj(ciaglosowy[i]);
 	}
+
 	drzewoAVL *drzewkoAVL = new drzewoAVL(ciag, n);
 	drzewoBST *zdegenerowaneBST = new drzewoBST;
-	//wyszukiwania
-	for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; i++)
 	{
 		zdegenerowaneBST->dodaj(ciag[i]);
 	}
+	
+	//wyszukiwania
+		/*
 	for (int i = 0; i < n / 10; i++) //pętla wykonuje się od 0 do n/10 wartości, czyli jeśli mamy 1000 elementów pętla wykona się 100 razy
 	{
 		int szukana = rand() % n;
-		cout << "Wartosci wyszukane w drzewie BST to: " << drzewkoBST->wyszukiwanie(szukana, drzewkoBST->korzen)->wartosc << endl;
+		//cout << "Wartosci wyszukane w drzewie BST to: " << drzewkoBST->wyszukiwanie(szukana, drzewkoBST->korzen)->wartosc << endl;
 	}
 	cout << endl;
 	for (int i = 0; i < n / 10; i++)
 	{
 		int szukana = rand() % n;
-		cout << "Wartosci wyszukane w drzewie AVL to: " << drzewkoAVL->wyszukiwanie(szukana, drzewkoAVL->korzenglowny)->wartosc << endl;
+		//cout << "Wartosci wyszukane w drzewie AVL to: " << drzewkoAVL->wyszukiwanie(szukana, drzewkoAVL->korzenglowny)->wartosc << endl;
 	}
 	cout << endl;
 	for (int i = 0; i < n / 10; i++)
 	{
 		int szukana = rand() % n;
-		cout << "Wartosci wyszukane w zdegenerowanym drzewie BST to: " << zdegenerowaneBST->wyszukiwanie(szukana, zdegenerowaneBST->korzen)->wartosc << endl;
+		//cout << "Wartosci wyszukane w zdegenerowanym drzewie BST to: " << zdegenerowaneBST->wyszukiwanie(szukana, zdegenerowaneBST->korzen)->wartosc << endl;
 	}
 	cout << endl;
 	 
@@ -574,14 +641,23 @@ int _tmain(int argc, _TCHAR* argv[])
 		int usuwany = rand() % n;
 		zdegenerowaneBST->UsunKorzen(zdegenerowaneBST->wyszukiwanie(usuwany, zdegenerowaneBST->korzen));
 	}
+	*/
+		
+		
+	/*cout << "Tabela wysokosci dla BST:" << endl;
+	drzewkoBST->wyswysokosc(drzewkoBST->korzen);
+	cout << "Tabela wysokosci dla AVL:" << endl;
+	drzewkoAVL->wyswysokosc(drzewkoAVL->korzenglowny);
+	cout << "Tabela wysokosci dla Zdegenerowanego BST:" << endl;
+	zdegenerowaneBST->wyswysokosc(zdegenerowaneBST->korzen);
+	*/
 
-
-	drzewkoBST->InorderTreeWalk(drzewkoBST->korzen);
-	cout << endl;
-	drzewkoAVL->InorderTreeWalk(drzewkoAVL->korzenglowny);
-	cout << endl;
-	zdegenerowaneBST->InorderTreeWalk(zdegenerowaneBST->korzen);
-	cout << endl;
+	//drzewkoBST->InorderTreeWalk(drzewkoBST->korzen);
+	//cout << endl;
+	//drzewkoAVL->InorderTreeWalk(drzewkoAVL->korzenglowny);
+	//cout << endl;
+	//zdegenerowaneBST->InorderTreeWalk(zdegenerowaneBST->korzen);
+	//cout << endl;
 	drzewkoBST->UsunDrzewo(drzewkoBST->korzen);
 	drzewkoAVL->UsunDrzewo(drzewkoAVL->korzenglowny);
 	zdegenerowaneBST->UsunDrzewo(zdegenerowaneBST->korzen);
