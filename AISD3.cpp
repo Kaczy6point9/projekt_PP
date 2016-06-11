@@ -38,60 +38,44 @@ int **macierzsasiedztwa(int wielkosc)
 	for (int pom = 0; pom < liczbakrawedzi; pom++) //iteracja dodająca krawedzie do grafu
 	{
 		
-		if (krawedzie < liczbakrawedzi) //jesli ilosc w krawedzi w macierzy jest mniejsza od ilosci krawedzi ktore powinny byc w krawedzi
-		{
+		
 
+		while(pom2 < wielkosc && krawedzie < liczbakrawedzi)
+		{
 			while (pom2 > pom3 || pom2 == pom3) //wypełniamy górny trójkąt macierzy jedynkami
 			{
 				pom3++; //zwiekszamy indeks drugiego wymiaru
-				if (pom3 > wielkosc - 1) //jezeli indeks wyjdzie poza rozmiar tablicy
-				{
-					pom3 = 0; //ustawiamy go z powrotem na pierwszy element
-					break;//wychodzimy z whilea
-				}
-			}
-			if (msas[pom2][pom3] == 0) //sprawdzamy czy nie ma już krawedzi w tej czesci macierzy
-			{
-				msas[pom2][pom3] = 1; //jesli nie ma, ustawiamy krawedz
-				krawedzie++; //ilosc krawedzi zwieksza sie
-			}
-			else if (pom3 < wielkosc) //jezeli jest krawedz i nie wyszliśmy poza zakres
-			{
-				do
-				{
-					pom3++; //idziemy jeden element dalej dopóki nie spotkamy takiego miejsca w macierzy w którym nie ma krawedzi
-				} while (msas[pom2][pom3] == 1); 
 
-				msas[pom2][pom3] = 1; //ustawiamy krawedz
-				krawedzie++; //ilośc krawedzi zwieksza się
 			}
-
-			pom3 = 0; //wracamy do początku macierzy
-			pom2++; //zwiekszamy indek wierzchołka
-			if (pom2 > wielkosc - 1 && krawedzie < liczbakrawedzi-1) //jeżeli wyjdziemy po za liczbę wierzchołków w macierzy
+			while(msas[pom2][pom3] == 1)
+				pom3++;
+			if (pom3 > wielkosc - 1)
 			{
-				pom2--; //zmniejszamy z powrotem do zakresu
-				if (msas[pom2][pom3] == 1) //jeśli istnieje krawędź w tym miejscu zwiększamy indeks i wtam wstawiamy jedynkę operacja ta sprawia, że graf staje się spójny
-				{
-					pom3++;
-					msas[pom2][pom3] = 1;
-					krawedzie++;
-				}
-				else
-				{
-					msas[pom2][pom3] = 1;
-					krawedzie++;
-				}
-				pom2 = 0; //po wstawieniu krawedzi w tym miejscu zerujemy macierz i przechodzimy ją od nowa
 				pom3 = 0;
+				
+				while (msas[pom2][pom3] == 1)
+					pom3++;
+				msas[pom2][pom3] = 1;
+				krawedzie++;
 			}
+			else
+			{
+				msas[pom2][pom3] = 1;
+				krawedzie++;
+			}
+			pom3 = 0;
+			pom2++;
+			
+		}
+		if (pom2 > wielkosc - 1)
+			pom2 = 0;
+		if (krawedzie == liczbakrawedzi)
+			break;
 		}
 		
-	}
+	
 
-	//Zamieniamy krawędź tak by z tej macierzy powstał graf spójny wciąż acykliczny i o nasyceniu 50%
-	/*if (msas[wielkosc - 2][wielkosc - 1] == 1)
-		swap(msas[0][wielkosc - 1], msas[wielkosc - 1][0]);*/
+
 
 
 	//Wyswietlanie macierzy sasiedztwa
@@ -142,8 +126,8 @@ list <int> *listasasiedztwa(int **macierzsasiedztwa, int n)
 	return krawedzie;
 } 
 
-// Macierz Incydencji niedziałająca - nie potrafię przekonwertować macierzy sąsiedztwa na macierz incydencji
-/*int **macierzincydencji(int **macierzsasiedztwa, int n)
+// Macierz Incydencji
+int **macierzincydencji(int **macierzsasiedztwa, int n)
 {
 	int ilosckrawedzii;
 	
@@ -160,50 +144,19 @@ list <int> *listasasiedztwa(int **macierzsasiedztwa, int n)
 			mincy[i][j] = 0;
 	}
 	
-	int pom2=0, pom3=0;
+	int pom3=0;
 
-	for (int pom = 0; pom < ilosckrawedzii; pom++) //pom = pomocnicza która będzie przechodziła przez macierz incydencji
+	for (int pom = 0; pom < n; pom++)
 	{
-	
-		while (macierzsasiedztwa[pom2][pom3] !=1)
-			pom3++;
-		if (pom > n-1)
+		for (int pom2 = 0; pom2 < n; pom2++)
 		{
-			pom3++;
-			if (pom3 > n - 1)
+			if (macierzsasiedztwa[pom][pom2] == 1)
 			{
-				pom2++;
-				if (pom2 > n - 1)
-				{
-					pom2--;
-				}
-				pom3=1;
-				mincy[pom2][pom] = -1;
-				mincy[pom3][pom] = 1;
-				continue;
+				mincy[pom][pom3] = -1;
+				mincy[pom2][pom3] = 1;
+				pom3++;
 			}
-			
-			mincy[pom2][pom] = -1;
-			mincy[pom3][pom] = 1;
 		}
-		else
-		{
-			
-			mincy[pom2][pom] = -1;
-			mincy[pom3][pom] = 1;
-		}
-		       
-		
-		pom3 = 0;
-		pom2++;
-		if (pom2 > n - 1)
-		{
-			pom2--;
-			mincy[pom2][pom] = -1;
-			mincy[pom3][pom] = 1;
-			pom2 = 0;
-		}
-			
 	}
 	
 	for (int i = 0; i < n; i++)
@@ -212,7 +165,7 @@ list <int> *listasasiedztwa(int **macierzsasiedztwa, int n)
 		for (int j = 0; j < liczbakrawedzi; j++)
 		{
 
-			cout << mincy[i][j] << " ";
+			cout << mincy[i][j] << "     ";
 		}
 
 		cout << endl;
@@ -222,7 +175,7 @@ list <int> *listasasiedztwa(int **macierzsasiedztwa, int n)
 
 	return mincy;
 }
-*/ 
+
 
 void BFS(int **macierzsasiedztwa, int v1, int n) //przekazujemy 3 argumenty, macierz sasiedztwa, wierzchołek startowy i wielkosc macierzy
 {
@@ -424,7 +377,7 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 		
 	
-	n = 6;
+	n = 10;
 	int ilosckrawedzii = liczbakrawedzi;
 	list <int> *lista = new list <int>[n + 1]; //lista następnikow
 
@@ -442,12 +395,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 	macierzsas = macierzsasiedztwa(n);
 	lista = listasasiedztwa(macierzsas, n);
-	//macierzincy = macierzincydencji(macierzsas, n);
+	macierzincy = macierzincydencji(macierzsas, n);
 
-	BFS(macierzsas, 2, n);
-	BFSlist(lista, 3, n);
-	DFS(macierzsas, 4, n);
-	DFSlista(lista, 1, n);
+	//BFS(macierzsas, 2, n);
+	//BFSlist(lista, 3, n);
+	//DFS(macierzsas, 4, n);
+	//DFSlista(lista, 1, n);
 
 	delete[] macierzsas;
 	delete[] lista;
