@@ -35,8 +35,7 @@ int **graf(int wielkosc, double nasycenie)
 			msas[pom][pom2] = 0;
 		}
 	}
-	int pom2 = 0; //zmiena która będzie służyła do poruszania się po indeksie wierszy macierzy
-	int pom3 = 0; //zmiena która będzie służyła do poruszania się po indeksie kolumn macierzy
+
 	int *stopienwierzcholka = new int[n];
 	for (int i = 0; i < n-1; i++)
 	{
@@ -69,22 +68,28 @@ int **graf(int wielkosc, double nasycenie)
 	
 	
 	
+	for (int i = 0; i < n; i++)
+	{
 
+		stopienwierzcholka[i] = 0;
+
+	}
 		for (int k = 0; k < n; k++)
 		{
 
 			for (int i = 0; i < n; i++)
 			{
-				int parzystosc = 0;       //zmienna do sprawdzania czy stopień jest parzysty
+			       //zmienna do sprawdzania czy stopień jest parzysty
 
 				for (int j = 0; j < n; j++)            //sprawdzamy jaki jest stopień krawędzi
 				{
-					if (msas[i][j] == 1)   parzystosc++;
+					if (msas[i][j] == 1)
+						stopienwierzcholka[i]++;
 				}
-				if (parzystosc % 2 == 1)             //jeżeli wierzchołek jest nieparzysty
+				if (stopienwierzcholka[i] % 2 == 1)             //jeżeli wierzchołek jest nieparzysty
 				{
-					int j = rand() % n;
-					while (i == j)
+					int j = rand() % n; // losujemy wierzchołek
+					while (i == j || j == i + 1 || j == i - 1 || (i == 0 && j == n - 1) || (i == n - 1 && j == 0)) //dopóki J będzie spełniało te warunki szukamy kolejnego
 						j = rand() % n;
 					//szukamy j tak długo aż spełnia wszystkie warunki miejsca
 
@@ -192,8 +197,8 @@ void Euler(int **graf, int v) //podajemy na wejście graf, wierzchołek wejsciow
 	euler.push(v); //wstawiamy na stos wierzchołek V
 }
 
-int index = 0;
-int *hamilton = new int[n];
+int index = 0; //index do poruszania się po stosie
+int *hamilton = new int[n]; //stos z cyklem Hamiltona
 
 void Hamilton(list <int> *listasasiedztwa, int v) //podajemy liste sasiedztwa oraz wierzchołek startowy
 {
@@ -210,8 +215,10 @@ void Hamilton(list <int> *listasasiedztwa, int v) //podajemy liste sasiedztwa or
 		{
 			if (visited[*it2] == false)                                       //w poszukiwaniu nieprzejrzanych wierzchołków
 				Hamilton(listasasiedztwa, *it2);
-			
+				
+					
 		}
+		visited[v] = false;
 	}
 	else
 	{
@@ -219,13 +226,13 @@ void Hamilton(list <int> *listasasiedztwa, int v) //podajemy liste sasiedztwa or
 		list <int>::iterator it1 = listasasiedztwa[v].begin();
 		for (it1; it1 != listasasiedztwa[v].end(); it1++)
 		{
-			if (*it1 == 0)
+			if (*it1 == 0) //jezeli sasiad wskazuje na początek
 			{
 				test = true;
 				break;
 			}
 		}
-		if (test)
+		if (test) //jezeli jest cyklem to wypisujemy
 		{
 
 			cout << "Hamiltonian Cycle :";
@@ -233,12 +240,13 @@ void Hamilton(list <int> *listasasiedztwa, int v) //podajemy liste sasiedztwa or
 			{
 				cout << hamilton[i];
 			}
-			cout << 0;
+			cout << 0; //dopisujemy zero poniewaz jest to cykl
 			cout << endl;
+			
 		}
 		
 	}
-	visited[v] = false;
+	
 	index--;
 	
 	
@@ -254,6 +262,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	nasycenie = 0.3;
 	list <int> *lista1 = new list <int>[n + 1];
 	list <int> *lista2 = new list <int>[n + 1];
+	list <int> *lista3 = new list <int>[n + 1];
 	//Tworzenie tablicy dynamicznej dwuwymiarowej - dla grafu1
 	int **graf1 = new int *[n];  //macierzsas = macierz sasiedztwa
 
@@ -291,11 +300,19 @@ int _tmain(int argc, _TCHAR* argv[])
 		cout << euler.top() << " ";
 		euler.pop();
 	}
+	cout << endl;
 	Hamilton(lista2, 0);
 	cout << endl;
+	//Tworzenie tablicy dynamicznej dwuwymiarowej - dla grafu1
+	int **graf3 = new int *[n];  //macierzsas = macierz sasiedztwa
 
+	for (int i = 0; i < n; i++)
+		graf3[i] = new int[n];
+	//Zadanie B wariant 2
+	graf3 = graf(n, 0.50);
+	lista3 = listasasiedztwa(graf3, n);
+	Hamilton(lista3, 0);
 
-	
 	system("PAUSE");
 	delete[] lista1;
 	delete[] lista2;
