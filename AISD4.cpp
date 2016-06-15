@@ -68,32 +68,27 @@ int **graf(int wielkosc, double nasycenie)
 	
 	
 	
-	for (int i = 0; i < n; i++)
-	{
-
-		stopienwierzcholka[i] = 0;
-
-	}
+	
 		for (int k = 0; k < n; k++)
 		{
 
 			for (int i = 0; i < n; i++)
 			{
-			       //zmienna do sprawdzania czy stopień jest parzysty
+				int parzystosc = 0;//zmienna do sprawdzania czy stopień jest parzysty
 
 				for (int j = 0; j < n; j++)            //sprawdzamy jaki jest stopień krawędzi
 				{
 					if (msas[i][j] == 1)
-						stopienwierzcholka[i]++;
+						parzystosc++;
 				}
-				if (stopienwierzcholka[i] % 2 == 1)             //jeżeli wierzchołek jest nieparzysty
+				if (parzystosc % 2 == 1)             //jeżeli wierzchołek jest nieparzysty
 				{
 					int j = rand() % n; // losujemy wierzchołek
 					while (i == j || j == i + 1 || j == i - 1 || (i == 0 && j == n - 1) || (i == n - 1 && j == 0)) //dopóki J będzie spełniało te warunki szukamy kolejnego
 						j = rand() % n;
 					//szukamy j tak długo aż spełnia wszystkie warunki miejsca
 
-					if (msas[i][j] == 1) //&& parzystosc>1)        //jeżeli miejsce jest zajęte to je zerujemy
+					if (msas[i][j] == 1 ) //&& parzystosc>1)        //jeżeli miejsce jest zajęte to je zerujemy
 					{
 						msas[i][j] = 0;
 						msas[j][i] = 0;
@@ -235,14 +230,14 @@ void Hamilton(list <int> *listasasiedztwa, int v) //podajemy liste sasiedztwa or
 		if (test) //jezeli jest cyklem to wypisujemy
 		{
 
-			cout << "Hamiltonian Cycle :";
+			/*cout << "Hamiltonian Cycle :";
 			for (int i = 0; i < index; i++)
 			{
 				cout << hamilton[i];
 			}
 			cout << 0; //dopisujemy zero poniewaz jest to cykl
 			cout << endl;
-			
+			*/
 		}
 		
 	}
